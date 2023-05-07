@@ -11,10 +11,14 @@
 
 <div class="main-content main-content-list container">
 
-    
-    {% for recipe in recipes  %}
-        {% include 'recipes/partials/recipe.html' %}
+    {% for  in  %}
+        {% for recipe in recipes  %}
+            {% include 'recipes/partials/recipe.html' %}
+        {% endfor %}
+    {% empty %}
+        <h1> NENHUMA RECEITA CADASTRADA AINDA</h1>
     {% endfor %}
+    
         
 </div>
 {% endblock content %}
