@@ -8,6 +8,8 @@
             "name": "Python: Django",
             "type": "python",
             "request": "launch",
+            "console": "integratedTerminal",
+            "host": "127.0.0.1",
             "program": "${workspaceFolder}\\manage.py",
             "args": [
                 "runserver"
