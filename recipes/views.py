@@ -20,6 +20,8 @@ def home(request):
 
     if request.GET.get('show'):
         messages.success(request, 'Isto é um teste de messagem')
+        messages.success(request, 'Isto é um teste de messagem')
+        messages.success(request, 'Isto é um teste de messagem')
 
     return render(request, 'recipes/pages/home.html', context={
         'recipes': page_obj,
