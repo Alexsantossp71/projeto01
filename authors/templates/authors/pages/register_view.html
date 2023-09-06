@@ -6,16 +6,19 @@ Register
 
 {% block content %}
 <div class="main-content container">
-
-    <h2>
-        Register {{ request.session.number }}
-    </h2>
+    <div class="center">
+        <h2>
+        Register 
+            </h2>
+   
+    </div>
+   
     <div class="main-content container">
-
+   
         <form action="{% url 'authors:create' %}" method="post">
         
             <div class="form-content form-content-grid">
-           
+         
                 {% for field in form  %}
 
                 <div class="form-group">
@@ -33,10 +36,25 @@ Register
                                
                 {% endfor %}
             </div>
-            <div class="form-group">
 
-                <button type="submit" class="btn btn-primary">Send</button>
+
+            {% if form.errors %}
+            <div class="form-content form-content-grid">
+                <div class="form-group">
+                    <div class="message messafge-error">
+                        Por favor corrija os erros no formulário
+                    </div> 
+
+                </div>
             </div>
+
+            {% endif %}
+
+            <div class="form-content form-content-grid">
+                <div class="form-group">
+                    <button type="submit" class="btn btn-primary">Send 2</button>
+                </div>
+
        </form>     
        
     </div>
