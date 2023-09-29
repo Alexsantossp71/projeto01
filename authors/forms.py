@@ -14,15 +14,15 @@ def add_placeholder(field, placeholder_val):
 
 
 def strong_password(password):
-    regex = re.compile(r'^(?=.[a-z])(?=.[A-Z])(?=.[0-9]).{8,}$')
+    regex = re.compile(r'^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9]).{8,}$')
 
     if not regex.match(password):
         raise ValidationError((
             'password must have at least 1 uppercase letter,'
             '1 lowercase letter, 1 number.'
-            'The length at list 8 characters'),
+            'The length at least 8 characters'
+        ),
             code='Invalid',
-
         )
 
 
@@ -32,13 +32,13 @@ class RegisterForm(forms.ModelForm):
         add_placeholder(self.fields['username'], 'Your username')
         add_placeholder(self.fields['email'], 'Your e-mail')
         add_placeholder(self.fields['first_name'], 'Ex. Jonh')
-        add_placeholder(self.fields['last_name'], 'Ex. Doe ')
+        add_placeholder(self.fields['last_name'], 'Ex. Doe')
+        add_placeholder(self.fields['password'], 'Type your password')
+        add_placeholder(self.fields['password2'], 'Repeat your password')
 
     password = forms.CharField(
         required=True,
-        widget=forms.PasswordInput(attrs={
-            'placeholder': 'Type your password',
-        }),
+        label='Password',
         error_messages={
             'required': 'Password must not be empty'
         },
@@ -52,10 +52,8 @@ class RegisterForm(forms.ModelForm):
 
     password2 = forms.CharField(
         required=True,
-        widget=forms.PasswordInput(attrs={
-            'placeholder': 'Repeat your password',
-        })
-
+        widget=forms.PasswordInput(),
+        label='Repeat Password'
     )
 
     class Meta:
@@ -71,9 +69,8 @@ class RegisterForm(forms.ModelForm):
         labels = {
             'username': 'Username',
             'first_name': 'First name',
-            'last_name': 'Last rname',
+            'last_name': 'Last name',
             'email': 'E-mail',
-            'password': 'Password',
         }
 
         help_texts = {
@@ -86,24 +83,8 @@ class RegisterForm(forms.ModelForm):
             }
         }
 
-        widgets = {
-            'first_name': forms.TextInput(attrs={
-                'placeholder': 'Type your first name here',
-            }),
-
-        }
-
     def clean_password(self):
         data = self.cleaned_data.get("password")
-
-        if 'ate' in data:
-            raise forms.ValidationError(
-                'Valor inválido',
-                code='invalid',
-                params={'pipoca': 'ate'}
-
-            )
-
         return data
 
     def clean(self):
