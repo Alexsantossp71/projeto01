@@ -36,6 +36,22 @@ class RegisterForm(forms.ModelForm):
         add_placeholder(self.fields['password'], 'Type your password')
         add_placeholder(self.fields['password2'], 'Repeat your password')
 
+    first_name = forms.CharField(
+        error_messages={'required': 'Write your first name'},
+        label='First name',
+    )
+
+    last_name = forms.CharField(
+        error_messages={'required': 'Write your last name'},
+        label='Last name',
+    )
+
+    email = forms.CharField(
+        error_messages={'required': 'E-mail is required'},
+        label='E-mail',
+        help_text='The e-mail must be valid.'
+    )
+
     password = forms.CharField(
         required=True,
         label='Password',
@@ -68,18 +84,11 @@ class RegisterForm(forms.ModelForm):
 
         labels = {
             'username': 'Username',
-            'first_name': 'First name',
-            'last_name': 'Last name',
-            'email': 'E-mail',
-        }
-
-        help_texts = {
-            'email': 'The e-mail must be valid.'
         }
 
         error_messages = {
             'username': {
-                'required': 'This field must not be empty',
+                'required': 'Username must not be empty',
             }
         }
 
@@ -94,7 +103,7 @@ class RegisterForm(forms.ModelForm):
 
         if password != password2:
             password_confirmation_error = ValidationError(
-                'As senhas devem ser iguais',
+                'Please repeat your password',
                 code='invalid'
             )
             raise ValidationError({
