@@ -36,6 +36,23 @@ class RegisterForm(forms.ModelForm):
         add_placeholder(self.fields['password'], 'Type your password')
         add_placeholder(self.fields['password2'], 'Repeat your password')
 
+    username = forms.CharField(
+        label='Username',
+        help_text=(
+            'Username must have letters, numbers and one of those @/./+/-/_',
+            'The length should be between 4 and 150 characters'
+        ),
+        # 'Obrigatório. 150 caracteres ou menos. Letras, números e  @/./+/-/_ apenas.',
+        error_messages={
+            'required': 'Username must not be empty',
+            'min_length': 'User must have at least 4 characters',
+            'max_length': 'User must have less than 150 characters',
+        },
+        min_length=4,
+        max_length=150,
+
+    )
+
     first_name = forms.CharField(
         error_messages={'required': 'Write your first name'},
         label='First name',
@@ -82,16 +99,6 @@ class RegisterForm(forms.ModelForm):
             'password',
         ]
 
-        labels = {
-            'username': 'Username',
-        }
-
-        error_messages = {
-            'username': {
-                'required': 'Username must not be empty',
-            }
-        }
-
     def clean_password(self):
         data = self.cleaned_data.get("password")
         return data
@@ -103,7 +110,7 @@ class RegisterForm(forms.ModelForm):
 
         if password != password2:
             password_confirmation_error = ValidationError(
-                'Please repeat your password',
+                'Password and Password2 must be equal',
                 code='invalid'
             )
             raise ValidationError({
