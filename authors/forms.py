@@ -39,10 +39,9 @@ class RegisterForm(forms.ModelForm):
     username = forms.CharField(
         label='Username',
         help_text=(
-            'Username must have letters, numbers and one of those @/./+/-/_',
-            'The length should be between 4 and 150 characters'
+            'Username must have letters, numbers or one of those @.+-_. '
+            'The length should be between 4 and 150 characters.'
         ),
-        # 'Obrigatório. 150 caracteres ou menos. Letras, números e  @/./+/-/_ apenas.',
         error_messages={
             'required': 'Username must not be empty',
             'min_length': 'User must have at least 4 characters',
@@ -70,23 +69,26 @@ class RegisterForm(forms.ModelForm):
     )
 
     password = forms.CharField(
-        required=True,
-        label='Password',
+        widget=forms.PasswordInput(),
         error_messages={
             'required': 'Password must not be empty'
         },
         help_text=(
-            'password must have at least 1 uppercase letter,'
-            '1 lowercase letter, 1 number.'
-            'The length at list 8 characters'
+            'Password must have at least one uppercase letter, '
+            'one lowercase letter and one number. The length should be '
+            'at least 8 characters.'
         ),
-        validators=[strong_password]
-    )
-
-    password2 = forms.CharField(
+        validators=[strong_password],
+        label='Password',
         required=True,
+    )
+    password2 = forms.CharField(
         widget=forms.PasswordInput(),
-        label='Repeat Password'
+        label='Repeat Password',
+        error_messages={
+            'required': 'Please, repeat your password'
+        },
+        required=True,
     )
 
     class Meta:
@@ -99,8 +101,23 @@ class RegisterForm(forms.ModelForm):
             'password',
         ]
 
+    def clean_email(self):
+        email = self.cleaned_data.get('email', '')
+        exists = User.objects.filter(email=email).exists()
+
+        if exists:
+            raise ValidationError(
+                'User e-mail is already in use', code='invalid',
+            )
+
+        return email
+
     def clean_password(self):
         data = self.cleaned_data.get("password")
+        return data
+
+    def clean_password2(self):
+        data = self.cleaned_data.get("password2")
         return data
 
     def clean(self):

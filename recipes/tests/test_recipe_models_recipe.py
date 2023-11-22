@@ -10,7 +10,7 @@ class RecipeModelTest(RecipeTestBase):
         return super().setUp()
 
     def make_recipe_no_defaults(self):
-        #recipe = Recipe()
+        # recipe = Recipe()
         recipe = Recipe(
             category=self.make_category(name='Test Defaul Category'),
             author=self.make_author(username='New Username'),
@@ -57,3 +57,12 @@ class RecipeModelTest(RecipeTestBase):
         self.recipe.full_clean()
         self.recipe.save()
         self.assertEqual(str(self.recipe), 'Testing Representation')
+
+    def test_str_is_equal_to_title(self):
+        recipe = self.make_recipe_no_defaults()
+        self.assertEqual(str(recipe), recipe.title)
+
+    def test_str_category_is_equal_to_name(self):
+        recipe = self.make_recipe_no_defaults()
+        category = self.make_category(name='Test Defaul Category')
+        self.assertEqual(str(category), recipe.category.name)
