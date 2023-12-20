@@ -1,29 +1,8 @@
 from django import forms
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
-import re
+from utils.django_forms import add_placeholder, strong_password
 
-
-def add_attr(field, attr_name, attr_new_val):
-    existing_attr = field.widget.attrs.get(attr_name, '')
-    field.widget.attrs[attr_name] = f'{existing_attr} {attr_new_val}'.strip()
-
-
-def add_placeholder(field, placeholder_val):
-    add_attr(field, 'placeholder', placeholder_val)
-
-
-def strong_password(password):
-    regex = re.compile(r'^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9]).{8,}$')
-
-    if not regex.match(password):
-        raise ValidationError((
-            'password must have at least 1 uppercase letter,'
-            '1 lowercase letter, 1 number.'
-            'The length at least 8 characters'
-        ),
-            code='Invalid',
-        )
 
 
 class RegisterForm(forms.ModelForm):
@@ -35,6 +14,19 @@ class RegisterForm(forms.ModelForm):
         add_placeholder(self.fields['last_name'], 'Ex. Doe')
         add_placeholder(self.fields['password'], 'Type your password')
         add_placeholder(self.fields['password2'], 'Repeat your password')
+
+    first_name = forms.CharField(
+
+
+        error_messages={'required': 'Write your first name'},
+        label='First name',
+        widget=forms.TextInput(attrs={'autofocus': 'autofocus'}),
+    )
+
+    last_name = forms.CharField(
+        error_messages={'required': 'Write your last name'},
+        label='Last name',
+    )
 
     username = forms.CharField(
         label='Username',
@@ -50,16 +42,6 @@ class RegisterForm(forms.ModelForm):
         min_length=4,
         max_length=150,
 
-    )
-
-    first_name = forms.CharField(
-        error_messages={'required': 'Write your first name'},
-        label='First name',
-    )
-
-    last_name = forms.CharField(
-        error_messages={'required': 'Write your last name'},
-        label='Last name',
     )
 
     email = forms.CharField(
@@ -81,6 +63,8 @@ class RegisterForm(forms.ModelForm):
         validators=[strong_password],
         label='Password',
         required=True,
+
+
     )
     password2 = forms.CharField(
         widget=forms.PasswordInput(),

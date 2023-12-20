@@ -12,7 +12,7 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 
 from pathlib import Path
 import os
-from django.contrib.messages import constants
+from django.contrib.messages import constants 
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -41,7 +41,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     # A gente tem apps também
     'recipes',
-    'authors', 
+    'authors',
 ]
 
 MIDDLEWARE = [
@@ -116,7 +116,6 @@ TIME_ZONE = 'America/Sao_Paulo'
 
 USE_I18N = True
 
-USE_L10N = True
 
 USE_TZ = True
 
