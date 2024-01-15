@@ -7,7 +7,7 @@ from unittest.mock import patch
 class RecipeHomeViewsTest(RecipeTestBase):
     def test_recipe_home_view_function_is_correct(self):
         view = resolve(reverse('recipes:home'))
-        self.assertIs(view.func, views.home)
+        self.assertIs(view.func.view_class, views.RecipeListViewHome)
 
     def test_recipe_home_view_returns_status_code_200_OK(self):
         response = self.client.get(reverse('recipes:home'))
@@ -50,10 +50,8 @@ class RecipeHomeViewsTest(RecipeTestBase):
         # Need a recipes for this test
         import recipes
 
-        for i in range(8):
-            kwargs = {'slug': f'r{i}',
-                      'author_data': {'username': f'u{i}'}}
-            self.make_recipe(**kwargs)
+        self.make_recipe_in_batch(qtd=8)
+        
         with patch('recipes.views.PER_PAGE', new=3):
             # recipes.views.PER_PAGE = 3
             response = self.client.get(reverse('recipes:home'))
@@ -65,10 +63,8 @@ class RecipeHomeViewsTest(RecipeTestBase):
             self.assertEqual(len(paginator.get_page(3)), 2)
 
     def test_invalid_page_query_uses_page_1(self):
-        for i in range(8):
-            kwargs = {'slug': f'r{i}',
-                      'author_data': {'username': f'u{i}'}}
-            self.make_recipe(**kwargs)
+        self.make_recipe_in_batch(qtd=8)
+
         with patch('recipes.views.PER_PAGE', new=3):
             response = self.client.get(reverse('recipes:home') + '?page=1A')
             self.assertEqual(response.context['recipes'].number, 1)

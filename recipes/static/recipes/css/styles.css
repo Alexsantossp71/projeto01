@@ -417,6 +417,12 @@ olor-debug-dark);
   color: var(--color-debug-dark);
 }
 
+/* Authors */ 
+
+.login-message {
+  margin: 2rem 0;
+}
+
 
 /* Generics */
 

@@ -1,3 +1,3 @@
 [run]
 branch = True
-omit = venv/*, **/*test*.py, manage.py
+omit = venv/*, **/*test*.py, manage.py, utils/browser.py, authors/admin.py,authors/apps.py, authors/forms/__init__.py,recipes/migrations/**.py,recipes/admin.py,recipes/apps.py

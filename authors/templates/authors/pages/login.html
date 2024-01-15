@@ -11,23 +11,16 @@ Login
             Login 
         </h2>
         
-        {% if request.user.is_authenticated %}
-        
-            You are loged in with
-            {{ request.user.username }}
-            <form class="inline-form" action="{% url 'authors:logout' %}" method="post">
-                
-                {% csrf_token %}
-                <input type="hidden" name="username" value="{{ request.user.username}}">
-                <button class="plaitext-button" type="submit">Click here</button>
-            </form>  to logout
-           
-        {% endif %}
+        {% include 'authors/partials/login_message.html' %}
             
     </div>
     {% include 'global/partials/messages.html' %}
-
+ 
+ {% if not user.is_authenticated %}
     {% include 'global/partials/form.html' %}
+ {% endif %}
+    
+    
 </div>
 
 {% endblock content %}
