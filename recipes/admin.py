@@ -28,8 +28,8 @@ class RecipeAdmin(admin.ModelAdmin):
     list_editable = 'is_published', 
     ordering = '-id',
     prepopulated_fields = {'slug': ('title',)}
-    inlines =[ TagInLine, ]
-
+    # inlines =[ TagInLine, ]
+    autocomplete_fields='tags',
 
 
 

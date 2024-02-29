@@ -37,7 +37,8 @@ class Recipe(models.Model):
     author = models.ForeignKey(
         User, on_delete=models.SET_NULL, null=True
     )
-    tags = GenericRelation(Tag, related_query_name='recipes')
+    tags = models.ManyToManyField(Tag)
+    # GenericRelation(Tag, related_query_name='recipes')
 
     def __str__(self):
         return self.title

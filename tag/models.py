@@ -15,13 +15,15 @@ class Tag(models.Model):
     # aqui começam os campos para relação generica
 
     # Representa o model
-    content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE)
+    #content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE)
 
     # representa o id da linha do model descrito
-    object_id = models.CharField(max_length=260)
+    #object_id = models.CharField(max_length=260)
 
     # um campo que reporesenta a relação generica entre content e object
-    content_object = GenericForeignKey('content_type', 'object_id')
+    #content_object = GenericForeignKey('content_type', 'object_id')
+
+    #
 
     def save(self, *args, **kwargs):
         if not self.slug:
