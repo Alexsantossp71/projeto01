@@ -130,6 +130,6 @@ _local_settings.py
 db.sqlite3
 gunicorn-error-log
 static/
-
+settings.py
 
 .dadosdoservidor.txt
