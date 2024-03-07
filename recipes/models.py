@@ -2,10 +2,12 @@
 # from django.db import models
 from django.contrib.auth.models import User
 from django.db import models
+from django.forms import ValidationError
 from django.urls import reverse
 from django.utils.text import slugify
 from django.contrib.contenttypes.fields import GenericRelation
 from tag.models import Tag
+from collections import defaultdict
 
 
 class Category(models.Model):
@@ -53,4 +55,23 @@ class Recipe(models.Model):
 
         return super().save(*args, **kwargs)
 
+
+    def clean(self, *args, **kwargs):
+        error_messages = defaultdict(list)
         
+
+        recipe_from_db = Recipe.objects.filter(
+            title__iexact=self.title
+        ).first()
+
+        if recipe_from_db:
+            if recipe_from_db.pk != self.pk:
+                error_messages['title'].append('Found recipes with the same title.')
+            
+        # image = self.cover.file
+        # if image.content_type not in ['image/jpeg', 'image/png']:
+        #     error_messages['invalid_content_type'] = \
+        #         'Please upload a valid image.'    
+            
+        if error_messages:
+                raise ValidationError(error_messages)

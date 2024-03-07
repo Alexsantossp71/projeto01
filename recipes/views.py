@@ -174,7 +174,7 @@ class RecipeDetailApi(RecipeDetail):
         )
     
 class RecipeListViewTag(RecipeListViewBase):
-    template_name = 'recipes/pages/Tag.html'
+    template_name = 'recipes/pages/tag.html'
 
     def get_queryset(self, *args, **kwargs):
 
