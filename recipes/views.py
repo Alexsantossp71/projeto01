@@ -8,6 +8,8 @@ from recipes.models import Recipe
 from utils.pagination import make_pagination
 from django.forms.models import model_to_dict
 from tag.models import Tag
+from django.utils.translation import gettext as _
+from django.utils.translation import get_language
 import os
 
 # para fazer classes listviews
@@ -35,8 +37,8 @@ class RecipeListViewBase(ListView):
         qs = qs.filter(
             is_published=True,
         )
-        qs = qs.select_related('author', 'category')
-        qs = qs.prefetch_related('tags')
+        qs = qs.select_related('author', 'category', 'author__profile')
+        qs = qs.prefetch_related('tags', )
         return qs
     
     def get_context_data(self, *args, **kwargs):
@@ -46,9 +48,13 @@ class RecipeListViewBase(ListView):
                 ctx.get('recipes'),
                 PER_PAGE
             )
+        
+        html_language = get_language()
+
         ctx.update({ 
             'recipes': page_obj,
             'pagination_range': pagination_range,
+            'html_language':html_language,
                 })
         return ctx
 
@@ -78,8 +84,11 @@ class RecipeListViewCategory(RecipeListViewBase):
         ctx = super().get_context_data(*args, **kwargs)
         search_term = self.request.GET.get('q', '')
 
+        category_translation = _('Category')
+
         ctx.update({ 
-            'title': f'{ctx.get("recipes")[0].category.name} - Category |',
+            'title': f'{ctx.get("recipes")[0].category.name} - '
+            f'{category_translation} |',
             })
                       
         return ctx
