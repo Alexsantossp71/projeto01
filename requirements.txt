@@ -4,3 +4,4 @@ whitenoise
 python-dotenv
 Pillow
 selenium
+django-debug-toolbar
